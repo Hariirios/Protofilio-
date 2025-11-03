@@ -78,14 +78,11 @@ $(document).ready(function(){
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on the page with the chatbot
     const chatForm = document.getElementById('chat-form');
-    if (!chatForm) return;
-    
-    const chatMessages = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendButton = document.getElementById('send-button');
+    const modalChatForm = document.getElementById('modal-chat-form');
     
     // Function to add a message to the chat
-    function addMessage(content, isUser = false) {
+    function addMessage(content, isUser = false, chatContainer = 'chat-messages') {
+        const chatMessages = document.getElementById(chatContainer);
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
         
@@ -103,7 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Function to show typing indicator
-    function showTypingIndicator() {
+    function showTypingIndicator(chatContainer = 'chat-messages') {
+        const chatMessages = document.getElementById(chatContainer);
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message bot-message typing-indicator';
         typingDiv.id = 'typing-indicator';
@@ -213,31 +211,89 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Handle form submission
-    chatForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+    // Handle form submission for main chat (if exists)
+    if (chatForm) {
+        chatForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessage(message, true);
+            
+            // Clear input
+            userInput.value = '';
+            sendButton.disabled = true;
+            
+            // Get and add bot response
+            const botResponse = await getGeminiResponse(message);
+            addMessage(botResponse);
+            
+            // Re-enable send button
+            sendButton.disabled = false;
+            userInput.focus();
+        });
         
-        const message = userInput.value.trim();
-        if (!message) return;
-        
-        // Add user message to chat
-        addMessage(message, true);
-        
-        // Clear input
-        userInput.value = '';
-        sendButton.disabled = true;
-        
-        // Get and add bot response
-        const botResponse = await getGeminiResponse(message);
-        addMessage(botResponse);
-        
-        // Re-enable send button
-        sendButton.disabled = false;
-        userInput.focus();
-    });
+        // Enable/disable send button based on input
+        const userInput = document.getElementById('user-input');
+        if (userInput) {
+            userInput.addEventListener('input', function() {
+                const sendButton = document.getElementById('send-button');
+                if (sendButton) {
+                    sendButton.disabled = !this.value.trim();
+                }
+            });
+        }
+    }
     
-    // Enable/disable send button based on input
-    userInput.addEventListener('input', function() {
-        sendButton.disabled = !this.value.trim();
-    });
+    // Handle form submission for modal chat
+    if (modalChatForm) {
+        modalChatForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const userInput = document.getElementById('modal-user-input');
+            const sendButton = document.getElementById('modal-send-button');
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            addMessage(message, true, 'modal-chat-messages');
+            
+            // Clear input
+            userInput.value = '';
+            sendButton.disabled = true;
+            
+            // Get and add bot response
+            const botResponse = await getGeminiResponse(message);
+            addMessage(botResponse, false, 'modal-chat-messages');
+            
+            // Re-enable send button
+            sendButton.disabled = false;
+            userInput.focus();
+        });
+        
+        // Enable/disable send button based on input
+        const modalUserInput = document.getElementById('modal-user-input');
+        if (modalUserInput) {
+            modalUserInput.addEventListener('input', function() {
+                const sendButton = document.getElementById('modal-send-button');
+                if (sendButton) {
+                    sendButton.disabled = !this.value.trim();
+                }
+            });
+        }
+    }
+    
+    // Add event listener to chatbot toggle button
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    if (chatbotToggle) {
+        chatbotToggle.addEventListener('click', function() {
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('chatbotModal'));
+            modal.show();
+        });
+    }
 });

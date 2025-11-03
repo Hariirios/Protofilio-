@@ -581,5 +581,44 @@
     <script src="assets/js/bootstrap.min.js" defer></script>
     <script src="assets/js/script.js" defer></script>
 
+    <!-- Floating Chatbot Button -->
+    <button id="chatbot-toggle" class="btn chatbot-toggle-btn" title="Chat with Gemini">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+
+    <!-- Chatbot Modal -->
+    <div class="modal fade" id="chatbotModal" tabindex="-1" aria-labelledby="chatbotModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content chatbot-modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chatbotModalLabel">Chat with Gemini</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-window">
+                        <div class="chat-messages" id="modal-chat-messages">
+                            <div class="message bot-message">
+                                <div class="message-content">
+                                    Hello! I'm your AI assistant powered by Gemini. How can I help you today?
+                                </div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <form id="modal-chat-form">
+                                <div class="input-group">
+                                    <input type="text" id="modal-user-input" class="form-control" placeholder="Type your message here..." required>
+                                    <button class="btn primary-bg-btn" type="submit" id="modal-send-button">
+                                        <i class="bi bi-send"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

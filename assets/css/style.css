@@ -1197,3 +1197,92 @@ a:hover{
         font-size: 14px;
     }
 }
+
+/*--------------------------------------------------------------
+# Floating Chatbot Button
+--------------------------------------------------------------*/
+
+.chatbot-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-gradient-color);
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border: none;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+}
+
+.chatbot-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.chatbot-toggle-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(65, 93, 230, 0.25);
+}
+
+/* Chatbot Modal Styles */
+.chatbot-modal-content {
+    background-color: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+}
+
+.modal-title {
+    color: var(--text-color);
+    font-family: 'Dancing Script', var(--font-family);
+    font-size: 24px;
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+/* Ensure chat window in modal has proper height */
+.modal-body .chat-window {
+    height: 500px;
+}
+
+@media (max-width: 768px) {
+    .chatbot-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .modal-body .chat-window {
+        height: 400px;
+    }
+    
+    .modal-dialog {
+        margin: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .modal-body .chat-window {
+        height: 350px;
+    }
+}
