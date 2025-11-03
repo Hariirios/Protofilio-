@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showTypingIndicator();
         
         try {
-            // Context about Hariiri for the AI
+            // Context about Hariiri for the AI (kept on client)
             const context = `You are an AI assistant for Hariiri (Abdalle Ahmed Hassan), a web developer. 
             Key information about Hariiri:
             - Final-year Computer Science student specializing in Data Science
@@ -143,22 +143,20 @@ document.addEventListener('DOMContentLoaded', function() {
             Respond professionally and concisely. If asked about topics unrelated to Hariiri or web development, 
             politely redirect to relevant topics.`;
             
-            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyCwFcFnC2CXlf-i0_03Bg3qo5ZLNEZ9W0s', {
+            // --- SECURE CHANGE: CALLING VERCEL SERVERLESS FUNCTION ---
+            const response = await fetch('/api/gemini', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    contents: [{
-                        parts: [
-                            { text: context + "\n\nUser: " + userMessage + "\nAssistant:" }
-                        ]
-                    }]
+                    userMessage: userMessage,
+                    context: context // Pass context to the proxy
                 })
             });
             
             if (!response.ok) {
-                throw new Error(`API request failed with status ${response.status}`);
+                throw new Error(`Proxy request failed with status ${response.status}`);
             }
             
             const data = await response.json();
