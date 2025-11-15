@@ -7,6 +7,17 @@ const fetch = require('node-fetch');
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY; 
 
 module.exports = async (req, res) => {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
+    
     // Only allow POST requests
     if (req.method !== 'POST') {
         res.status(405).send('Method Not Allowed');
@@ -16,6 +27,12 @@ module.exports = async (req, res) => {
     try {
         // Extract the user message and context from the client request body
         const { userMessage, context } = req.body;
+
+        // Validate input
+        if (!userMessage) {
+            res.status(400).json({ error: 'Missing userMessage in request body' });
+            return;
+        }
 
         // Build the request body for the Gemini API
         const apiBody = JSON.stringify({

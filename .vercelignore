@@ -1,0 +1,5 @@
+# Ignore these files when deploying to Vercel
+README.md
+Developer Portolio Website.png
+.vscode/
+.git/

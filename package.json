@@ -1,0 +1,25 @@
+{
+  "name": "hariiri-portfolio",
+  "version": "1.0.0",
+  "description": "Hariiri's personal portfolio website",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "keywords": [
+    "portfolio",
+    "web development",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "Hariiri (Abdalle Ahmed Hassan)",
+  "license": "MIT"
+}
